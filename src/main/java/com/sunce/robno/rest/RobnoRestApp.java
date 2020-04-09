@@ -1,9 +1,5 @@
 package com.sunce.robno.rest;
 
-import com.ansa.util.beans.PostavkeBeanOpce;
-import com.sunce.robno.rest.manager.Konstante;
-import com.sunce.robno.rest.resource.RobnoRestResourceConfig;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +13,16 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import com.ansa.util.beans.PostavkeBeanOpce;
+import com.sunce.robno.rest.manager.Konstante;
+import com.sunce.robno.rest.resource.RobnoRestResourceConfig;
+
 public class RobnoRestApp {
     
+	private static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static com.ansa.dao.DAOFactory factory; 
 	private static Map<UUID, Integer> loggedUsers = new HashMap<UUID, Integer>();
 	   
@@ -34,6 +34,9 @@ public class RobnoRestApp {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(8080);
         server.addConnector(connector);
+        
+       //java.net.URL classUrl = this.getClass().getResource("com.sun.mail.util.TraceInputStream");
+       // System.out.println(classUrl.getFile());
         
         HandlerCollection handlers = new HandlerCollection();
         
@@ -88,10 +91,11 @@ public class RobnoRestApp {
      if (server==null) 
     	 server="127.0.0.1";
      
-     System.out.println("Spajanje na bazu: "+server);
+     System.out.println("(REST) Spajanje na bazu: "+server + " driver: " + MYSQL_DRIVER + " Baza: " + Konstante.BAZA_PODATAKA);
 
-     factory.connectToDB("com.mysql.cj.jdbc.Driver",
-                       "jdbc:mysql://", server, Konstante.BAZA_PODATAKA + Konstante.BAZA_DEF_ENCODING,
+     factory.connectToDB(MYSQL_DRIVER,
+                       "jdbc:mysql://", server, 
+                       Konstante.BAZA_PODATAKA + Konstante.BAZA_DEF_ENCODING,
                        Konstante.BAZA_USERNAME,
                        Konstante.BAZA_PASSWORD,
                        Konstante.MIN_DB_VEZA_POOL,
@@ -102,6 +106,7 @@ public class RobnoRestApp {
     }//getDAOFactory
     
     public final static Integer getLoggedUserIdForUUID(UUID uuid) {
+    	if (uuid == null) return null;
     	return loggedUsers.get(uuid);
     }
     

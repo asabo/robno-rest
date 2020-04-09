@@ -5,12 +5,13 @@
  */
 package com.sunce.robno.rest.manager;
 
-import com.sunce.robno.rest.dto.UserCredentials;
+import com.ansa.dao.net.Korisnik;
 
 /**
  *
  * @author ante
  */
 public interface UserAuthenticator {
-     public int authenticateUser(UserCredentials creds);
+     public Korisnik authenticateUser(Korisnik korisnik);
+     public Boolean changePassword(Korisnik korisnik);
 }

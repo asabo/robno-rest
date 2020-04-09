@@ -2,8 +2,8 @@ package com.sunce.robno.rest.manager;
 
 import javax.inject.Inject;
 
+import com.ansa.dao.net.Korisnik;
 import com.sunce.robno.rest.RobnoRestApp;
-import com.sunce.robno.rest.dto.UserCredentials;
 
 /**
  * class in charge to hold logic that will solve problem of paint 
@@ -20,12 +20,21 @@ public class UserAuthenticatorImpl implements UserAuthenticator {
     }
       
     @Override
-    public int authenticateUser(UserCredentials creds) {
+    public Korisnik authenticateUser(Korisnik kor) {
         System.out.println("We got task to authenticate user " 
-                + "username: " + creds.getUsername() 
+                + "username: " + kor.getUsername() 
                 );
        
-    return daoFactory.logirajKorisnika(creds.getUsername(), creds.getPassword());
+    return daoFactory.logirajKorisnika(kor);
+    }
+    
+    @Override
+    public Boolean changePassword(Korisnik kor) {
+        System.out.println("We got task to change password for user " 
+                + "username: " + kor.getUsername() 
+                );
+       
+    return daoFactory.izmjeniLozinku(kor);
     }
     
 }

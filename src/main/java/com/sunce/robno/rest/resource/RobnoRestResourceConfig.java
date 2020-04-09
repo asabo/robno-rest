@@ -12,8 +12,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
+import com.sunce.robno.rest.manager.DaoFactoryManager;
+import com.sunce.robno.rest.manager.DaoFactoryManagerImpl;
 import com.sunce.robno.rest.manager.DaoObjektManager;
 import com.sunce.robno.rest.manager.DaoObjektManagerImpl;
+import com.sunce.robno.rest.manager.MailManager;
+import com.sunce.robno.rest.manager.MailManagerImpl;
 import com.sunce.robno.rest.manager.UserAuthenticator;
 import com.sunce.robno.rest.manager.UserAuthenticatorImpl;
 
@@ -26,7 +30,9 @@ public class RobnoRestResourceConfig extends ResourceConfig {
     public RobnoRestResourceConfig() {
 
         // where the resource classes are
+    	
         packages("com.sunce.robno.rest.resource"); 
+        
         setApplicationName("RobnoRest");
 
         register(new AbstractBinder() {
@@ -34,6 +40,8 @@ public class RobnoRestResourceConfig extends ResourceConfig {
             protected void configure() {
                 bind(UserAuthenticatorImpl.class).to(UserAuthenticator.class);
                 bind(DaoObjektManagerImpl.class).to(DaoObjektManager.class);
+                bind(DaoFactoryManagerImpl.class).to(DaoFactoryManager.class);
+                bind(MailManagerImpl.class).to(MailManager.class);
             }
         });
     }
@@ -51,8 +59,13 @@ public class RobnoRestResourceConfig extends ResourceConfig {
 }
 
 class CustomObjectMapper extends ObjectMapper {
-    public CustomObjectMapper() {
+
+	private static final long serialVersionUID = -8464818847000721314L;
+
+	public CustomObjectMapper() {
         this.configure(com.fasterxml.jackson.databind.SerializationFeature.
                 WRITE_DATES_AS_TIMESTAMPS, false);
+        
+    	//this.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
     }
 }

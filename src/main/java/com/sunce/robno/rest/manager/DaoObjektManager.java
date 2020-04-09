@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.ansa.dao.ValueObject;
 import com.ansa.dao.net.Kolona;
+import com.ansa.dao.net.Rezultat;
 
 /**
  *
@@ -20,8 +21,9 @@ public interface DaoObjektManager {
      public List<Kolona> getTablePrimaryKey(String name);
      public List<Kolona> getTableImportedKeys(String name);
      
-     public ValueObject readObject(String name, int id);
-     public boolean insertObject(String name, ValueObject object);
+     public ValueObject readObject(String name, String id);
+     public Rezultat readAll(String name, Object key);
+     public int insertObject(String name, ValueObject object);
      public boolean updateObject(String name, ValueObject object);
      public boolean deleteObject(String name, int id);
      

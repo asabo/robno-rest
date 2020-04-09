@@ -9,6 +9,7 @@ public class UserCredentials {
 
 	private String username;
 	private String password;
+
 	
 	public String getUsername() {
 		return username;
