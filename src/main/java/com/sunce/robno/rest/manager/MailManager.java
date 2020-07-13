@@ -16,6 +16,5 @@ public interface MailManager {
      public boolean sendOrderEmail(Integer orderId);
      public boolean sendExceptionEmail();
      public boolean sendInvoiceEmail(EmailDTO invoicePdf, Integer invoiceId);
-     public boolean sendInvoiceEmailExcelRRP(byte[] invoiceExcel, Integer invoiceId);
 
 }

@@ -2,6 +2,7 @@ package com.sunce.web.mail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,6 +24,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -122,19 +124,21 @@ public final class SendMail {
 			
 			arl.clear();
 			
-			for (String t : bcc) {
+			if (bcc != null)
+			 for (String t : bcc) {
 				if (StringUtils.isNotEmpty(t)) {
 					try {
-					InternetAddress adr = new InternetAddress(t);
-					arl.add(adr);
+					 InternetAddress adr = new InternetAddress(t);
+					 arl.add(adr);
 					} catch (AddressException adre) {
 						LOG.warn("Problem checking receipient's bcc email address: " + t);
 					}
 				}
-			}
-			
-			bccAddress = new InternetAddress[arl.size()];
-			arl.toArray(bccAddress); arl = null;
+
+				bccAddress = new InternetAddress[arl.size()];
+				arl.toArray(bccAddress); arl = null;
+			 }
+			 
 			
 			List<InternetAddress> replyToList = new ArrayList<>(replyTo.length);
 			for (String t : replyTo) {
@@ -156,7 +160,7 @@ public final class SendMail {
 		}
 
 		if (attachment != null) {
-			System.out.println("Saljemo attachment u mailu... ");
+			System.out.println("Saljemo " + attachmentType + " attachment u mailu... ");
 			return this.sendWithAttachment(attachment, attachmentType, attachmentName,  mailSession, fromAddress, toAddress, subject, htmlText, ccAddress, bccAddress, replyToAddress);
 		}
 
@@ -175,7 +179,8 @@ public final class SendMail {
 
 			simpleMessage.setSubject(subject);
 			// simpleMessage.setText(text);
-			simpleMessage.setContent(htmlText, "text/html");
+			
+			simpleMessage.setContent(htmlText == null ? "" : htmlText, "text/html");
 
 			Transport transport = mailSession.getTransport(this.config.getProtocol());
 			transport.connect(this.config.getHost(), config.getPort(), config.getUsername(), config.getPassword());
@@ -215,21 +220,25 @@ public final class SendMail {
 			  message.addRecipients(Message.RecipientType.BCC, bccAddress);
 
 			message.setSubject(subject);
-			message.setText("This mail contains message in HTML format and file attachment with details. If you see htis message you should consider changing email agent.");
+		 
+			message.setText(
+					"This mail contains message in HTML format and file attachment with details. "
+					+ "If you see this message you should consider changing email agent."
+					);
 
 			Multipart multipart = new MimeMultipart();
 
 			// create file parts
 			//MimeBodyPart filePartCsv = new MimeBodyPart();
-			MimeBodyPart filePartTxt = new MimeBodyPart();
+			MimeBodyPart filePart = new MimeBodyPart();
 
 			DataSource source = new ByteArrayDataSource(attachment, attachmentType);
 
 			//filePartCsv.setDataHandler(new DataHandler(source));
 			//filePartCsv.setFileName(fileName);
 
-			filePartTxt.setDataHandler(new DataHandler(source));
-			filePartTxt.setFileName(attachmentName);
+			filePart.setDataHandler(new DataHandler(source));
+			filePart.setFileName(attachmentName);
 
 			// Create the html part
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
@@ -237,11 +246,13 @@ public final class SendMail {
 
 			multipart.addBodyPart(messageBodyPart);
 			//multipart.addBodyPart(filePartCsv);
-			multipart.addBodyPart(filePartTxt);
+			multipart.addBodyPart(filePart);
 
 			message.setContent(multipart);
 
-			LOG.info("start sending email... protocol: " + this.config.getProtocol());
+			String message2 = "start sending email... protocol: " + this.config.getProtocol() + " att. type: " + attachmentType + " html:\n" + htmlText;
+			LOG.info(message2);
+			System.out.println(message2);
 
 			Transport transport = session.getTransport(this.config.getProtocol());
 			transport.connect(this.config.getHost(), config.getPort(), config.getUsername(), config.getPassword());

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://ec2-54-194-1-22.eu-west-1.compute.amazonaws.com:8080/" href="start.jnlp">
+    <information>
+        <title>Sunce*Robno</title>
+        <vendor>Sunce mikrosustavi d.o.o.</vendor>
+         <icon href="img/sunce-hzzo.png" />
+         <icon href="img/sunce-splash.png" kind="splash"/>
+         <homepage href="hzzo.jsp"/>
+         <description kind="tooltip">Sunce*Robno - warehouse application</description>
+          <offline-allowed/>
+      <shortcut online="true">
+      <!-- create desktop shortcut -->
+       <desktop/>
+      </shortcut>
+    </information>
+      <security>
+         <all-permissions/> 
+      </security>
+    <resources>
+        <java version="1.8+" href="http://java.sun.com/products/autodl/j2se" java-vm-args="-ea" initial-heap-size="128m" max-heap-size="512m"/>       
+        
+        <jar href="robno.jar" main="true" download="eager" />    
+        
+        <jar href="lib/AbsoluteLayout.jar" main="false" download="eager" />   
+        <jar href="lib/beansbinding-1.2.1.jar" main="false" download="lazy" />
+        <jar href="lib/bouncy.jar" main="false" download="lazy" />
+        <jar href="lib/commons-cli-1.2.jar" main="false" download="lazy" />
+        <jar href="lib/commons-codec-1.11.jar" main="false" download="lazy" /> 
+        <jar href="lib/commons-logging-1.2.jar" main="false" download="lazy" /> 
+        <jar href="lib/commons-validator-1.6.jar" main="false" download="lazy" /> 
+        <jar href="lib/html2pdf-2.1.7.jar" main="false" download="lazy" /> 
+        <jar href="lib/httpclient-4.5.11.jar" main="false" download="lazy" /> 
+        <jar href="lib/httpcore-4.4.13.jar" main="false" download="lazy" />
+        <jar href="lib/httpmime-4.5.11.jar" main="false" download="lazy" />
+        <jar href="lib/io-7.1.10.jar" main="false" download="lazy" />
+        <jar href="lib/jackson-annotations-2.10.2.jar" main="false" download="lazy" />    
+        <jar href="lib/jackson-core-2.10.2.jar" main="false" download="lazy" />
+        <jar href="lib/jackson-databind-2.10.2.jar" main="false" download="lazy" />  
+        <jar href="lib/jbcl.jar" main="false" download="lazy" />
+        <jar href="lib/jxl-2.6.12.jar" main="false" download="lazy" />
+        <jar href="lib/kernel-7.1.10.jar" main="false" download="lazy" />
+        <jar href="lib/layout-7.1.10.jar" main="false" download="lazy" />
+        <jar href="lib/mysql-connector-java-8.0.19.jar" main="false" download="lazy" />     
+        <jar href="lib/resilience4j-circuitbreaker-1.3.1.jar" main="false" download="lazy" /> 
+        <jar href="lib/resilience4j-core-1.3.1.jar" main="false" download="lazy" />
+        <jar href="lib/resilience4j-retry-1.3.1.jar" main="false" download="lazy" />
+        <jar href="lib/slf4j-api-1.7.9.jar" main="false" download="lazy" />
+        <jar href="lib/slf4j-simple-1.7.9.jar" main="false" download="lazy" />
+        <jar href="lib/styled-xml-parser-7.1.10.jar" main="false" download="lazy" />
+        <jar href="lib/svg-7.1.10.jar" main="false" download="lazy" />
+        <jar href="lib/swing-layout-1.0.3.jar" main="false" download="lazy" />   
+        <jar href="lib/swingx-0.9.3.jar" main="false" download="lazy" />
+        <jar href="lib/ansaDAO.jar" main="false" download="lazy" />
+        <jar href="lib/vavr-0.10.2" main="false" download="lazy" />
+          
+        <extension name="BouncyCastle" href="bouncy.jnlp"/>   
+        
+    </resources>
+   
+      <application-desc main-class="com.sunce.robno.GlavniFrame">
+        <argument>sva_pomagala</argument>
+    </application-desc>
+    
+  
+</jnlp>

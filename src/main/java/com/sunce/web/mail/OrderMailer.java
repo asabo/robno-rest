@@ -127,10 +127,10 @@ public class OrderMailer {
 			return false;
 		}
  		
-		ValueObject invoicePdf = invoiceDto.getMeta();
+		ValueObject emailMessage = invoiceDto.getMeta();
 		byte[] pdf = invoiceDto.getAttachment();
 		
-		String email = (String) invoicePdf.getValue("to");
+		String email = (String) emailMessage.getValue("to");
 
 		LOG.info("Trying to send invoice email to " + email + " forced: " + forced);
 
@@ -143,10 +143,10 @@ public class OrderMailer {
 		String testMode = config.isTestMode() ? "[TEST] " : "";
 		String version = "1.0";
 
-		String subject = testMode + invoicePdf.getValue("subject") + 
+		String subject = testMode + emailMessage.getValue("subject") + 
 				   (forced ? " [FORCED]":"");
 
-		String message = (String) invoicePdf.getValue("message");
+		String message = (String) emailMessage.getValue("message");
 
 		Properties props = generateEmailProperties();
 		String[] to = new String[1]; to[0] = email;
@@ -155,7 +155,7 @@ public class OrderMailer {
 			//LOG.info("trysend");
 			String fromName = null;
 			String ccTo = null;
-			String bcc = (String) invoicePdf.getValue("bcc");
+			String bcc = (String) emailMessage.getValue("bcc");
 			String[] replyToAddress = null;
 			 
 			//to = config.getOrderReceivers().split(";");
@@ -200,14 +200,18 @@ public class OrderMailer {
 	} //sendInvoicePDF
 	
 	public boolean sendInvoiceEmailWithRRPPricesInExcel(
-			byte[] invoiceExcel, ValueObject invoice, List<ValueObject> articles,
+			EmailDTO invoiceDto, ValueObject invoice, List<ValueObject> articles,
 			ValueObject client,
 			long acceptedOnServer, Boolean forced) {
 		boolean res = false;
 		
-		String email = (String) client.getValue("EMAIL");
+		
+		ValueObject emailMessage = invoiceDto.getMeta();
+		byte[] invoiceExcel = invoiceDto.getAttachment();
+		
+		String emailTo = (String) emailMessage.getValue("to");
 
-		LOG.info("Trying to send excel invoice email to " + email + " forced: " + forced);
+		LOG.info("Trying to send excel invoice email to " + emailTo + " forced: " + forced);
 
 		if (invoiceExcel == null) {
 			return false;
@@ -218,13 +222,13 @@ public class OrderMailer {
 		String testMode = config.isTestMode() ? "[TEST] " : "";
 		String version = "1.0";
 
-		String subject = testMode + "Invoice #" + String.format("%06d", invoice.getValue("_ID2")) + 
+		String subject = testMode + emailMessage.getValue("subject") + 
 				   (forced ? " [FORCED]":"");
 
-		String message = generateInvoiceHtml(invoice, articles, version, acceptedOnServer, "Excel");
+		String message = (String) emailMessage.getValue("message");
 
 		Properties props = generateEmailProperties();
-		String[] to = new String[1]; to[0] = email;
+		String[] to = new String[1]; to[0] = emailTo;
 		
 		try {
 			//LOG.info("trysend");
@@ -237,10 +241,12 @@ public class OrderMailer {
 			ccTo = "";
 			replyToAddress = this.replyTo;
 			String invoiceName = "Invoice-"+invoice.getSifra()+".xls"; 
-			String[] bcc = null;
-			 
-			SendMail sendMail = new SendMail(fromName, from, to, ccTo, bcc, replyToAddress, subject, message, props, config,
-					invoiceExcel, invoiceName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			String mimeType = "application/vnd.ms-excel"; //"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+			String bcc = (String) emailMessage.getValue("bcc");
+			String[] bccTo = bcc!=null ? bcc.split(";") : null;
+			
+			SendMail sendMail = new SendMail(fromName, from, to, ccTo, bccTo, replyToAddress, subject, message, props, config,
+					invoiceExcel, invoiceName, mimeType);
 			
 			String mailSendingMesg = "trysend inst, sending invoice as excel, from name: " + fromName + 
 					" sender: " + from + " to: " + to.length +  " - "+ Arrays.toString(to) + " TLS: " + config.isStartTLS() +

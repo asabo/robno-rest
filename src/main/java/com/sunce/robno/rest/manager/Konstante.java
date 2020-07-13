@@ -21,6 +21,6 @@ public class Konstante
     public static String BAZA_DEF_ENCODING="";//"?useUnicode=true&verifyServerCertificate=false&allowPublicKeyRetrieval=true";
     public static int MIN_DB_VEZA_POOL=1;
     public static int MAX_DB_VEZA_POOL=15;
-    public static String DB_LOG_FILE="sunce_db_pool_log.txt";
+    public static String DB_LOG_FILE="robno_db_pool_log.txt";
 
 }

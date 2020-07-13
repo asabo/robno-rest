@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Start Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<Title>Sunce*HZZO - program za fakturiranje HZZO recepata</title>
+<SCRIPT LANGUAGE="JavaScript"> 
+var javawsInstalled = 0;  
+var javaws142Installed=0;
+var javaws150Installed=0;
+var javaws160Installed = 0;
+isIE = "false"; 
+if (navigator.mimeTypes && navigator.mimeTypes.length) { 
+   x = navigator.mimeTypes['application/x-java-jnlp-file']; 
+   if (x) { 
+      javawsInstalled = 1; 
+      javaws142Installed=1;
+      javaws150Installed=1;
+      javaws160Installed = 1; 
+  } 
+} 
+else { 
+   isIE = "true"; 
+} 
+</SCRIPT> 
+<SCRIPT LANGUAGE="VBScript">
+on error resume next
+If isIE = "true" Then
+  If Not(IsObject(CreateObject("JavaWebStart.isInstalled"))) Then
+     javawsInstalled = 0
+  Else
+     javawsInstalled = 1
+  End If
+  If Not(IsObject(CreateObject("JavaWebStart.isInstalled.1.4.2.0"))) Then
+     javaws142Installed = 0
+  Else
+     javaws142Installed = 1
+  End If 
+  If Not(IsObject(CreateObject("JavaWebStart.isInstalled.1.5.0.0"))) Then
+     javaws150Installed = 0
+  Else
+     javaws150Installed = 1
+  End If  
+  If Not(IsObject(CreateObject("JavaWebStart.isInstalled.1.6.0.0"))) Then
+     javaws160Installed = 0
+  Else
+     javaws160Installed = 1
+  End If  
+End If
+</SCRIPT>
+
+</head>
+<body>
+	<h1>Robno REST start point</h1>
+
+	<script>
+		
+	</script>
+	<h1>Welcome</h1>
+	<p>this is a start position for our new micro service
+	<p>
+		Warehouse app can be started following this link:
+ <a id="mylink" target="_self" href="start.jnlp">go</a>
+		<script>
+	  var dir = location.href.substring(0,
+            location.href.lastIndexOf('/')+1);
+        var url = dir + "start.jnlp";
+        document.getElementById('mylink').href = url;
+	</script>
+  
+ 
+</body>
+</html>

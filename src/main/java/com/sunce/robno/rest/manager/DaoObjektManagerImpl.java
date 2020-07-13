@@ -6,13 +6,14 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.ansa.dao.DAOFactory;
 import com.ansa.dao.DAOObjekt;
 import com.ansa.dao.Logger;
 import com.ansa.dao.ValueObject;
 import com.ansa.dao.net.Kolona;
 import com.ansa.dao.net.Rezultat;
-import com.sunce.robno.rest.RobnoRestApp;
 
 /**
  * vraca podatke o nekom dao objektu
@@ -20,10 +21,11 @@ import com.sunce.robno.rest.RobnoRestApp;
 public class DaoObjektManagerImpl implements DaoObjektManager {
  
   private DaoObjectCacheManager cache;
+  private DAOFactory daoFactory;
     
     @Inject
-    public DaoObjektManagerImpl() {
-    	 RobnoRestApp.getDAOFactory(); // da factory postane opreational
+    public DaoObjektManagerImpl(DAOFactory daoFactory) {
+    	 this.daoFactory = daoFactory;
     	 cache = new DaoObjectCacheManager();
     }
 
@@ -72,6 +74,11 @@ public class DaoObjektManagerImpl implements DaoObjektManager {
 
 	@Override
 	public int insertObject(String name, ValueObject object) {
+		if (object == null || StringUtils.isEmpty(name)) {
+			Logger.log("Empty objects cannot be inserted obj: " + object + " name: " + name);
+			return -1;
+		}
+			
 		DAOObjekt daoObjekt = DAOFactory.getDAOObjekt(name);
 	    try {
 			daoObjekt.insert(object);
@@ -80,6 +87,7 @@ public class DaoObjektManagerImpl implements DaoObjektManager {
 			Logger.log("Problem inserting object: " + object , e);
 			return -1;
 		}
+	    
 	    return object.getStatus() == 'I' ? object.getSifra() : -1;
 	}
 
