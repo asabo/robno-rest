@@ -55,7 +55,9 @@ public class RobnoRestResourceConfig extends ResourceConfig {
 				bind(DaoFactoryManagerImpl.class).to(DaoFactoryManager.class);
 				bind(MailManagerImpl.class).to(MailManager.class);
 				bind(StockManagerImpl.class).to(StockManager.class).in(Singleton.class);
+				//bind(CustomObjectMapper.class).to(ObjectMapper.class).in(Singleton.class);
 				bind(getDAOFactory()).to(DAOFactory.class);
+				bind(jacksonObjectMapper()).to(ObjectMapper.class);
 			}
 		});
 	}
@@ -108,9 +110,14 @@ public class RobnoRestResourceConfig extends ResourceConfig {
 		return dir;
 	}// vratiKonfiguracijskiDirektorijKorisnika
 
+	private static CustomObjectMapper objMapper = null;
+	
 	@BeanParam
 	public ObjectMapper jacksonObjectMapper() {
-		return new CustomObjectMapper();
+		if (objMapper == null) 
+			objMapper = new CustomObjectMapper();
+		
+		return objMapper;
 	}
 
 	@BeanParam
@@ -125,8 +132,8 @@ class CustomObjectMapper extends ObjectMapper {
 	private static final long serialVersionUID = -8464818847000721314L;
 
 	public CustomObjectMapper() {
-		this.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
+		//this.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		//mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		// this.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,
 		// true);
 	}

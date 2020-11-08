@@ -12,6 +12,7 @@ com/sunce/web/dto/ExceptionReportDTO.class
 com/sunce/robno/rest/manager/DaoObjektManager.class
 com/sunce/robno/rest/manager/DaoObjectCacheManager.class
 com/sunce/robno/rest/AppConfig.class
+com/sunce/util/ZipUtil.class
 com/sunce/robno/rest/manager/DaoFactoryManagerImpl.class
 com/sunce/robno/rest/resource/v1/Mail.class
 com/sunce/robno/rest/resource/RobnoRestResourceConfig$1.class

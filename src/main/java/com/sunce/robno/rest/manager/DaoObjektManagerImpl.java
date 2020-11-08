@@ -88,7 +88,12 @@ public class DaoObjektManagerImpl implements DaoObjektManager {
 			return -1;
 		}
 	    
-	    return object.getStatus() == 'I' ? object.getSifra() : -1;
+	    if ( object.getStatus() == 'I' ) 
+	    	return object.getSifra();  
+	    	else {
+	    		Logger.log("Problem with inserted object, status not 'I', returning -1... ID: " + object.getSifra());
+	    		return -1;
+	    	}
 	}
 
 	@Override
